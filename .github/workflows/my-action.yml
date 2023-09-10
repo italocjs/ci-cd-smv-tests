@@ -21,20 +21,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello, Github Actions!"
-  needs: [say-hello] #second job needs another job to be completed
-    runs-on: ubuntu-latest
-    steps:
-      # use https://github.com/actions/checkout to checkout the repository
-      - name: Checkout this repo
-        uses: actions/checkout@v3
 
-      # install necessary dependencies
-      - name: Install dependencies
-      - run: sudo apt install -y build-essential python3 #run commands in the shell
+  build-and-test:
+    needs: [say-hello] #second job needs another job to be completed
+      runs-on: ubuntu-latest
+      steps:
+        # use https://github.com/actions/checkout to checkout the repository
+        - name: Checkout this repo
+          uses: actions/checkout@v3
 
-      # see where we are
-      - run: pwd
+        # install necessary dependencies
+        - name: Install dependencies
+        - run: sudo apt install -y build-essential python3 #run commands in the shell
 
-      # run our tests
-      - name: Run tests
-        run: python3 test.py
+        # see where we are
+        - run: pwd
+
+        # run our tests
+        - name: Run tests
+          run: python3 test.py
