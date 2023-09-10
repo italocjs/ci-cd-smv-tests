@@ -32,7 +32,7 @@ jobs:
 
       # install necessary dependencies
       - name: Install dependencies
-      - run: sudo apt install -y build-essential python3 #run commands in the shell
+        run: sudo apt install -y build-essential python3 #run commands in the shell
 
       # see where we are
       - run: pwd
