@@ -5,6 +5,8 @@ Full guide:
 - part 2: https://www.youtube.com/watch?v=8pyqbYDYkRs
 - part 3: https://www.youtube.com/watch?v=lZWFmEhIhpY
 
+- Github: https://github.com/ShawnHymel/c-unit-test
+
 ## Docker setup
 - **building image**
 
@@ -93,3 +95,4 @@ Full guide:
 - Stub: predefined return for interface 
 - Mock: prefefined behavior for interaction
 - Fake: limited working implementation
+

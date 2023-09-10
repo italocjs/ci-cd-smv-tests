@@ -1,22 +1,26 @@
-# Fetch ubuntu 22.04
+# Fetch ubuntu image
 FROM ubuntu:22.04
 
-#install python on image,  \ is used to break the line 
-RUN \
-    apt-get update && \
-    apt-get install -y python3 && \
-    apt-get install -y build-essential
+# Install build tools
+RUN apt update && \
+    apt install -y wget build-essential autoconf automake libtool
+    
+# Copy project into image
+RUN mkdir /project
+COPY src /project/src
+COPY tests /project/tests
+COPY Makefile /project/Makefile
 
-# create a directory for out test files 
-RUN mkdir /tests
-
-# copy in our python script
-COPY test.py /tests/test.py
-
-# copy in our c file
-COPY main.c /tests/main.c
-
-# command that wull run when the container starts
-ENTRYPOINT ["python3", "/tests/test.py"]
-#CMD ["something", "else"] # pass this as an argument to the entrypoint
-
+# Download and build CppUTest
+RUN mkdir /project/tools/ && \
+    cd /project/ && \
+    wget https://github.com/cpputest/cpputest/releases/download/v4.0/cpputest-4.0.tar.gz && \
+    tar xf cpputest-4.0.tar.gz && \
+    mv cpputest-4.0/ tools/cpputest/ && \
+    cd tools/cpputest/ && \
+    autoreconf -i && \
+    ./configure && \
+    make
+    
+# Execute script
+ENTRYPOINT ["make", "test", "-C", "/project/"]
