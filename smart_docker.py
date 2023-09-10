@@ -39,22 +39,33 @@ def image_exists(image_name):
     return image_name in docker_images_output.splitlines()
 
 def main():
-    image_name = "your-image-name"
+    image_name = "my_test_image"
     host_path = os.getcwd()  # Get the current working directory
     container_path = "/app"
 
-    # Check if the Docker image already exists
-    if image_exists(image_name):
-        debug_print(f"Image {image_name} already exists. Skipping build.", "SUCCESS")
+    base_image_name = "cpp_test_base"
+    base_image_dir = "./my-base-image"  # Change this to your actual directory
+    
+    # Build the base image first
+    if image_exists(base_image_name):
+        debug_print(f"Image {base_image_name} already exists. Skipping build.", "SUCCESS")
     else:
         # Build the Docker image
         debug_print("Building Docker image...", "INFO")
-        run_command(f"docker build -t {image_name} .")
+        # run_command(f"docker build -t {image_name} .")
+        run_command(f"docker build -t {base_image_name} {base_image_dir}")
+
+    # Check if the test image already exists, if it does, delete it
+    if image_exists(image_name):
+        debug_print(f"Image {image_name} already exists. Deleting and making an new.", "SUCCESS")
+        run_command(f"docker rmi {image_name}")
+    debug_print("Building Docker image...", "INFO")
+    run_command(f"docker build -t {image_name} .")
 
     # Run the Docker container with volume but without port forwarding
     debug_print("Running Docker container with volume...", "INFO")
     run_command(f"docker run --rm -v {host_path}:{container_path} {image_name}")
-  
+    
     # List all available Docker images
     debug_print("Listing all available Docker images:", "INFO")
     run_command("docker images")
@@ -63,11 +74,16 @@ def main():
     debug_print("Listing all running Docker containers:", "INFO")
     run_command("docker ps")
 
+    # The testing image should always be deleted
+
+    debug_print("Test done, Deleting Docker image...", "INFO")
+    run_command(f"docker rmi {image_name}")
+
     # Optionally, delete the Docker image
-    delete_image = input("Do you want to delete the Docker image? (y/n): ")
+    delete_image = input("Do you want to delete the base image? (y/n): ")
     if delete_image.lower() == 'y':
         debug_print("Deleting Docker image...", "INFO")
-        run_command(f"docker rmi {image_name}")
+        run_command(f"docker rmi {base_image_name}")
 
 
 if __name__ == "__main__":

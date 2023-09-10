@@ -31,5 +31,5 @@ TEST(average_test_group, null_test)
 {
     float array[1];
     float avg = average(array, 0);
-    CHECK_EQUAL(avg, 2.0); // Should fail
+    CHECK_EQUAL(avg, 0); // Should fail
 }

@@ -1,26 +1,29 @@
 # Fetch ubuntu image
-FROM ubuntu:22.04
+# FROM ubuntu:22.04
+# Use the base image
+FROM cpp_test_base
 
-# Install build tools
-RUN apt update && \
-    apt install -y wget build-essential autoconf automake libtool
-    
+
+
 # Copy project into image
-RUN mkdir /project
+RUN mkdir /project -p
 COPY src /project/src
 COPY tests /project/tests
 COPY Makefile /project/Makefile
 
 # Download and build CppUTest
-RUN mkdir /project/tools/ && \
-    cd /project/ && \
-    wget https://github.com/cpputest/cpputest/releases/download/v4.0/cpputest-4.0.tar.gz && \
-    tar xf cpputest-4.0.tar.gz && \
-    mv cpputest-4.0/ tools/cpputest/ && \
-    cd tools/cpputest/ && \
-    autoreconf -i && \
-    ./configure && \
-    make
-    
+RUN cd /project/ && \
+    if [ -f "cpputest-4.0.tar.gz" ]; then \
+        tar xf cpputest-4.0.tar.gz && \
+        mv cpputest-4.0/ tools/cpputest/ && \
+        cd tools/cpputest/ && \
+        autoreconf -i && \
+        ./configure && \
+        make; \
+    else \
+        echo "CppUTest tarball not found."; \
+        exit 1; \
+    fi
+
 # Execute script
 ENTRYPOINT ["make", "test", "-C", "/project/"]
