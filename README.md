@@ -1,1 +1,86 @@
-# ci-cd-smv-tests
+1st create the Dockerfile, then build the image, then create the container
+
+
+# building image
+
+docker build -t my-image .   # Build image from Dockerfile, tag as `my-image`
+images are factories, used to create conteiners, they dont do much alone
+
+- i flag = interactive mode, if it should keep running and have terminal interaction.
+- t --entrypoint="/bin/bash" = will use bash?
+- . means the dockerfile is in the current directory, if not used, full path must be specified
+
+# building container
+
+```
+docker create -i -t --entrypoint="/bin/bash" --name my-container my-image # Create container from image, run bash, keep STDIN open
+```
+
+# copy file from host to container (file deleted after container is stopped)
+
+```
+docker cp another-test.py my-container:/home/another-test.py
+
+PS D:\HelloDocker> docker create -i -t --entrypoint="/bin/bash" --name my-container my-image
+    f6ba99d10ffea832cd60f0b6720bc651fd103d24844ffe8b8eb19dd938d88747
+```
+# start container, keep interactive mode
+
+```
+docker start -i my-container
+
+PS D:\HelloDocker> docker start -i my-container
+    root@f6ba99d10ffe:/# 
+```
+
+
+# exit container:    
+```
+exit
+```
+
+# remove container
+```
+docker rm my-container
+```
+
+# lists all containers
+```
+docker container ls -a
+```
+
+# start specific container from list
+```
+PS D:\HelloDocker> docker container ls -a
+    CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS    PORTS     NAMES
+    e2bc96c92115   my-image   "python3 /tests/test…"   23 seconds ago   Created             laughing_shaw
+PS D:\HelloDocker> docker start -i laughing_shaw
+    Hello World!
+PS D:\HelloDocker> docker container rm laughing_shaw  
+laughing_shaw
+PS D:\HelloDocker> docker container ls -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+```
+
+# create and run container from image
+useful to run some cond in a very specific environment, like a python script that needs a specific version of python
+
+```
+PS D:\HelloDocker> docker run --rm my-image
+Hello World!
+PS D:\HelloDocker> docker container ls -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS D:\HelloDocker> 
+```
+
+# delete an image (all containers must be deleted first)
+```
+PS D:\HelloDocker> docker image rm my-image
+Untagged: my-image:latest
+Deleted: sha256:9b20eacf3e1e5aeb255694e4daed5a6fd04d5be676ac5d1e9b0cc90613f62943
+PS D:\HelloDocker> docker image ls -a
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+PS D:\HelloDocker> 
+```
+
