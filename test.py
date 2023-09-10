@@ -3,7 +3,8 @@ import subprocess
 
 
 # Settings
-TEST_DIR = "/tests"  # Directory where the tests are located
+# TEST_DIR = "/tests"  # Directory where the tests are located
+TEST_DIR = "."  # Directory where the tests are located
 CODE_FILE = "main.c"  # Name of the file containing the code to be tested
 COMPILER_TIMEOUT = 10  # Time in seconds before the compiler is killed
 RUN_TIMEOUT = 10  # Time in seconds before the program is killed
