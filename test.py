@@ -51,6 +51,10 @@ except Exception as e:
         print("ERROR: Failed while running: ", str(e))
         exit(1)
 
+# Parse the output
+output = ret.stdout.decode("utf-8")
+print("Output: ", output)
+
 # All tests have passed
 print("All tests passed")
 exit(0) #no errors!
