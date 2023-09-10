@@ -1,0 +1,23 @@
+# name of the workflow
+name: My Action
+
+# define the trigger for the workflow
+on: [push]
+# on:
+#   # trigger the workflow on push events
+#   push:
+#     # only trigger the workflow on the master branch
+#     branches: [ master ]
+#   # trigger the workflow on pull request events
+#   pull_request:
+#     # only trigger the workflow on the master branch
+#     branches: [ master ]
+
+# define the jobs that will run in the workflow
+jobs:
+
+  # job to print something
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello World - From jobs"
