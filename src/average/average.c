@@ -12,5 +12,6 @@ float average(float array[], unsigned int size)
     {
         sum += array[i]; // sum = sum + arr[i]
     }
-    return sum / (float)size;
+    float return_value = sum / (float)size;
+    return return_value;
 }
