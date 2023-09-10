@@ -89,7 +89,3 @@ Full guide:
     PS D:\HelloDocker> 
     ```
 
-## Unit testing
-- Stub: predefined return for interface 
-- Mock: prefefined behavior for interaction
-- Fake: limited working implementation
